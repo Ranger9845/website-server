@@ -13,6 +13,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Health check endpoint (always available)
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'Server is running', db: db ? 'Connected' : 'Connecting...', timestamp: new Date() });
+});
+
 // MongoDB connection string
 const MONGODB_URI = 'mongodb+srv://NeoLayer:NeoLayer12@neolayer.bmr6cuu.mongodb.net/neolayer-store?retryWrites=true&w=majority';
 
@@ -44,12 +49,7 @@ async function startServer() {
             await settingsCollection.insertOne({ _id: 'store', theme: 'default' });
         }
         
-        // Routes
-        
-        // Health check
-        app.get('/api/health', (req, res) => {
-            res.json({ status: 'Server is running', timestamp: new Date() });
-        });
+        // Routes will be defined here after MongoDB connects
         
         // GET all products
         app.get('/api/products', async (req, res) => {
