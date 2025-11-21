@@ -24,12 +24,15 @@ let settingsCollection;
 // Connect to MongoDB and start server
 async function startServer() {
     try {
+        console.log('Attempting to connect to MongoDB...');
+        console.log('URI:', MONGODB_URI.substring(0, 50) + '...');
+        
         const client = await MongoClient.connect(MONGODB_URI, { 
             useNewUrlParser: true, 
             useUnifiedTopology: true 
         });
         
-        console.log('Connected to MongoDB');
+        console.log('✓ Connected to MongoDB');
         db = client.db('neolayer-store');
         productsCollection = db.collection('products');
         ordersCollection = db.collection('orders');
