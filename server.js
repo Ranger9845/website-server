@@ -456,23 +456,10 @@ app.get('/api/payments/config', (req, res) => {
     });
 });
 
-// Serve static files AFTER API routes
-app.use(express.static(__dirname));
-
-// Serve index.html for root
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// 404 handler for undefined API routes (BEFORE static files catch them)
+// 404 handler for undefined API routes
 app.use((req, res) => {
-    // If it's an API request, return JSON 404
-    if (req.path.startsWith('/api')) {
-        console.warn(`API Route not found: ${req.method} ${req.path}`);
-        return res.status(404).json({ error: 'API endpoint not found', path: req.path, method: req.method });
-    }
-    // Otherwise try to serve as static file or 404
-    res.status(404).sendFile(path.join(__dirname, 'index.html'));
+    console.warn(`Route not found: ${req.method} ${req.path}`);
+    return res.status(404).json({ error: 'API endpoint not found', path: req.path, method: req.method });
 });
 
 // Connect to MongoDB
